@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  org-a:
+    build: .
+    container_name: mycelial-org-a
+    ports:
+      - "8000:8000"
+    command: uvicorn server_a:app --host 0.0.0.0 --port 8000
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  org-b:
+    build: .
+    container_name: mycelial-org-b
+    ports:
+      - "8001:8001"
+    command: uvicorn server_b:app --host 0.0.0.0 --port 8001
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  benchmark:
+    build: .
+    container_name: mycelial-benchmark
+    depends_on:
+      - org-a
+      - org-b
+    command: python benchmark.py
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
