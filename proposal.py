@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 import time
+import json
 
 @dataclass
 class GraftProposal:
     source_org: str
     target_org: str
     layer_name: str
-    delta_b64: str
-    shape: list          # JSON-safe list of integers
+    delta_b64: str           # AES-encrypted + Base64
+    shape: list
     surprise_score: float
     privacy_cost: float
     graft_id: str
