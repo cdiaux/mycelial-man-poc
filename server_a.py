@@ -4,6 +4,7 @@ from config import Config
 from manifold import MycelialManifold
 from privacy import DifferentialPrivacyEngine
 from proposal import GraftProposal
+from encryption import PayloadEncryptor
 from transformers import AutoModelForCausalLM
 import uvicorn
 import time
@@ -18,6 +19,7 @@ base_model = AutoModelForCausalLM.from_pretrained(
 )
 manifold = MycelialManifold(base_model, config)
 dp = DifferentialPrivacyEngine()
+encryptor = PayloadEncryptor()   # New
 
 manifold.add_adapter("Org_A")
 
@@ -28,13 +30,14 @@ def propose_graft():
     raw_delta = manifold.get_lora_delta("Org_A", layer_target)
     privatized = dp.privatize(raw_delta)
     
-    b64_string = base64.b64encode(privatized.cpu().numpy().tobytes()).decode('utf-8')
+    # ENCRYPT the tensor before sending
+    encrypted_b64 = encryptor.encrypt(privatized.cpu().numpy().tobytes())
     
     proposal = GraftProposal(
         source_org="Org_A",
         target_org="Org_B",
         layer_name=layer_target,
-        delta_b64=b64_string,
+        delta_b64=encrypted_b64,
         shape=list(privatized.shape),
         surprise_score=0.08,
         privacy_cost=dp.epsilon,
