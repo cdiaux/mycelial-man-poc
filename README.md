@@ -28,4 +28,12 @@ Companion code for the white paper **"The End of AI Rent-Seeking: How Regular Co
 ```bash
 docker compose up --build
 
+## Quick Start
+scr
+### Option 1: Using the startup ipt (Recommended)
+
+```bash
+chmod +x start.sh
+./start.sh
+
 This is a living proof-of-concept for the Mycelial Adapter Network described in the paper.
