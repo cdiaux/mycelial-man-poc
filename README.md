@@ -37,3 +37,71 @@ chmod +x start.sh
 ./start.sh
 
 This is a living proof-of-concept for the Mycelial Adapter Network described in the paper.
+
+2. Hugging Face Login (for Llama models)bash
+
+huggingface-cli login
+
+3. Run the Network (Recommended)bash
+
+chmod +x start.sh
+./start.sh
+
+4. Run Benchmarkbash
+
+python benchmark.py
+
+Manual Startbash
+
+# Terminal 1 - Org A
+uvicorn server_a:app --port 8000 --reload
+
+# Terminal 2 - Org B
+uvicorn server_b:app --port 8001 --reload
+
+# Terminal 3 - Test
+python main.py
+
+Docker Deploymentbash
+
+docker compose up --build
+
+Repository StructureFile
+Purpose
+server_a.py
+Org A (graft proposer)
+server_b.py
+Org B (graft receiver)
+manifold.py
+Core grafting + SVD logic
+privacy.py
+Differential Privacy Engine
+proposal.py
+Serializable GraftProposal
+benchmark.py
+Measures Security Overhead Tax
+start.sh
+Easy startup script
+docker-compose.yml
+Multi-container deployment
+
+SecuritySee `SECURITY.md` (SECURITY.md) for reporting vulnerabilities.Important Notes:This is a proof-of-concept. Do not use in production without additional hardening.
+AES encryption key is generated at runtime (for demo). In production, use a shared secret or secrets manager.
+4-bit models use safe adapter switching to avoid quantization issues.
+
+Benchmark ResultsRunning benchmark.py will generate benchmark_results.json with real measurements of:Graft proposal latency
+Full round-trip time
+Estimated Security Overhead Tax
+
+CitationIf you use this code in research or a project, please cite the white paper:Weaver, M. (2026). The End of AI Rent-Seeking: How Regular Companies Are Building Sovereign AI Empires.
+
+LicenseMIT License — see `LICENSE` (LICENSE) file.
+
+---
+
+**Copy and paste the entire content above into your `README.md` file.**
+
+This version is clean, well-structured, professional, and ready for public release.
+
+Would you like me to also generate the final `SECURITY.md`, `.gitignore`, or a sample launch announcement post for X?
+
